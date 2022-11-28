@@ -23,6 +23,7 @@ class Frotz(object):
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE)
         time.sleep(0.1)  # Allow to load
+        print("[Debug]: Started Frotz")
 
         # Load default savegame
         #if exists(self.save_file):
@@ -166,6 +167,12 @@ class Frotz(object):
             return False
         else:
             return True
+    
+    def stop_frotz(self):
+        self.do_command_test('q')
+        time.sleep(0.5)
+        self.do_command_test('y')
+        print("[Debug]: Stopped Frotz")
 
 # load your game file
 data = '/home/dietpi/Skybot/zork_3.z5'
@@ -179,4 +186,5 @@ print(room)
 print(description)
 game.save("save.qzl")
 game.restore("save.qzl")
+game.stop_frotz()
 exit()
