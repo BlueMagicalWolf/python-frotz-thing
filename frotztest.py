@@ -71,17 +71,17 @@ class Frotz(object):
                 break
 
         time.sleep(0.5)
-        self._clear_until_prompt(None)
+        #self._clear_until_prompt()
 
     def restore(self, filename=None):
         """
             Restore saved game.
         """
         filename = filename or self.save_file
-        self.do_command('restore')
+        self.do_command_test('restore')
         time.sleep(0.5)
         self._clear_until_prompt(':')
-        self.do_command(filename)  # Accept default savegame
+        self.do_command_test(filename)  # Accept default savegame
         time.sleep(0.5)
         self._clear_until_prompt()
 
@@ -89,14 +89,10 @@ class Frotz(object):
         """ Clear all received characters until the standard prompt. """
         # Clear all data with title etcetera
         prompt = prompt or self.prompt_symbol
-        print(prompt)
-        if prompt == None:
-            print("empty")
-        if prompt != None:
+        char = self.frotz.stdout.read(1).decode()
+        while char != prompt:
+            time.sleep(0.001)
             char = self.frotz.stdout.read(1).decode()
-            while char != prompt:
-                time.sleep(0.001)
-                char = self.frotz.stdout.read(1).decode()
 
     def do_command(self, action):
         """ Write a command to the interpreter. """
